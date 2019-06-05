@@ -120,14 +120,21 @@ public class RomanNumeralsConverterTest {
         assertEquals(2749, number);
     }
 
+    //Can not exceed 3999
+    @Test(expected = InvalidRomanNumeralException.class)
+    public void shouldNotConvertRomanNumeralMMMM() throws InvalidRomanNumeralException {
+
+        final RomanNumeralsConverter romanNumeralsConverter = new RomanNumeralsConverter();
+
+        romanNumeralsConverter.romanNumeralToNumber("MMMM");
+    }
+
     @Test(expected = InvalidRomanNumeralException.class)
     public void shouldNotConvertTheInvalidRomanNumeralVZ() throws InvalidRomanNumeralException {
 
         final RomanNumeralsConverter romanNumeralsConverter = new RomanNumeralsConverter();
 
-        final int number = romanNumeralsConverter.romanNumeralToNumber("VZ");
-
-        assertEquals(1, number);
+        romanNumeralsConverter.romanNumeralToNumber("VZ");
     }
 
     @Test(expected = InvalidRomanNumeralException.class)
@@ -159,13 +166,97 @@ public class RomanNumeralsConverterTest {
     /*******************Number To RomanNumeral*************************/
 
     @Test
-    public void shouldConvertTheNumeral2749() {
+    public void shouldConvertTheNumber1() throws InvalidRomanNumeralException {
+
+        final RomanNumeralsConverter romanNumeralsConverter = new RomanNumeralsConverter();
+
+        final String romanNumeral = romanNumeralsConverter.numberToRomanNumeral(1);
+
+        assertEquals("I", romanNumeral);
+    }
+
+    @Test
+    public void shouldConvertTheNumber5() throws InvalidRomanNumeralException {
+
+        final RomanNumeralsConverter romanNumeralsConverter = new RomanNumeralsConverter();
+
+        final String romanNumeral = romanNumeralsConverter.numberToRomanNumeral(5);
+
+        assertEquals("V", romanNumeral);
+    }
+
+    @Test
+    public void shouldConvertTheNumber4() throws InvalidRomanNumeralException {
+
+        final RomanNumeralsConverter romanNumeralsConverter = new RomanNumeralsConverter();
+
+        final String romanNumeral = romanNumeralsConverter.numberToRomanNumeral(4);
+
+        assertEquals("IV", romanNumeral);
+    }
+
+    @Test
+    public void shouldConvertTheNumber49() throws InvalidRomanNumeralException {
+
+        final RomanNumeralsConverter romanNumeralsConverter = new RomanNumeralsConverter();
+
+        final String romanNumeral = romanNumeralsConverter.numberToRomanNumeral(49);
+
+        assertEquals("XLIX", romanNumeral);
+    }
+
+    @Test
+    public void shouldConvertTheNumber2749() throws InvalidRomanNumeralException {
 
         final RomanNumeralsConverter romanNumeralsConverter = new RomanNumeralsConverter();
 
         final String romanNumeral = romanNumeralsConverter.numberToRomanNumeral(2749);
 
         assertEquals("MMDCCXLIX", romanNumeral);
+    }
+
+    @Test
+    public void shouldConvertTheNumber3494() throws InvalidRomanNumeralException {
+
+        final RomanNumeralsConverter romanNumeralsConverter = new RomanNumeralsConverter();
+
+        final String romanNumeral = romanNumeralsConverter.numberToRomanNumeral(3494);
+
+        assertEquals("MMMCDXCIV", romanNumeral);
+    }
+
+    @Test
+    public void shouldConvertTheNumber3999() throws InvalidRomanNumeralException {
+
+        final RomanNumeralsConverter romanNumeralsConverter = new RomanNumeralsConverter();
+
+        final String romanNumeral = romanNumeralsConverter.numberToRomanNumeral(3999);
+
+        assertEquals("MMMCMXCIX", romanNumeral);
+    }
+
+    @Test(expected = InvalidRomanNumeralException.class)
+    public void shouldNotConvertTheNumber0() throws InvalidRomanNumeralException {
+
+        final RomanNumeralsConverter romanNumeralsConverter = new RomanNumeralsConverter();
+
+        final String romanNumeral = romanNumeralsConverter.numberToRomanNumeral(0);
+    }
+
+    @Test(expected = InvalidRomanNumeralException.class)
+    public void shouldNotConvertTheNumber4000() throws InvalidRomanNumeralException {
+
+        final RomanNumeralsConverter romanNumeralsConverter = new RomanNumeralsConverter();
+
+        final String romanNumeral = romanNumeralsConverter.numberToRomanNumeral(4000);
+    }
+
+    @Test(expected = InvalidRomanNumeralException.class)
+    public void shouldNotConvertTheNumber5123() throws InvalidRomanNumeralException {
+
+        final RomanNumeralsConverter romanNumeralsConverter = new RomanNumeralsConverter();
+
+        final String romanNumeral = romanNumeralsConverter.numberToRomanNumeral(5123);
     }
 
     /*******************Number To RomanNumeral*************************/

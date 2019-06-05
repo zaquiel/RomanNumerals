@@ -2,15 +2,12 @@ package main.java.br.com;
 
 import org.junit.platform.commons.util.StringUtils;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class RomanNumeralsConverter {
 
-    private final static Map<Character, Integer> fromTo = new HashMap<Character, Integer>() {
+    private final static Map<Character, Integer> fromRomanToNumber = new HashMap<Character, Integer>() {
         {
             put('I',1);
             put('V', 5);
@@ -22,6 +19,28 @@ public class RomanNumeralsConverter {
         }
     };
 
+    private final static TreeMap<Integer,String> fromNumberToRoman = new TreeMap<Integer, String>() {
+        {
+            put(1,"I");
+            put(4,"IV");
+            put(5,"V");
+            put(9,"IX");
+            put(10,"X");
+            put(40,"XL");
+            put(50,"L");
+            put(90,"XC");
+            put(100, "C");
+            put(400, "CD");
+            put(500, "D");
+            put(900, "CM");
+            put(1000,"M");
+        }
+    };
+
+    private boolean romanNumeralValidate(final String symbol) {
+        return StringUtils.isNotBlank(symbol) &&
+                symbol.toUpperCase().matches("^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$");
+    }
 
     public int romanNumeralToNumber(final String symbol) throws InvalidRomanNumeralException {
 
@@ -41,8 +60,8 @@ public class RomanNumeralsConverter {
         int prevNumber = 0;
 
         for (final Character letter : letters) {
-            if (fromTo.containsKey(letter)) {
-                int currentNumber = fromTo.get(letter);
+            if (fromRomanToNumber.containsKey(letter)) {
+                int currentNumber = fromRomanToNumber.get(letter);
 
                 finalNumber += (currentNumber * ((currentNumber < prevNumber) ? -1 : 1));
 
@@ -53,12 +72,21 @@ public class RomanNumeralsConverter {
         return finalNumber;
     }
 
-    private boolean romanNumeralValidate(final String symbol) {
-        return StringUtils.isNotBlank(symbol) &&
-                symbol.toUpperCase().matches("^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$");
+    private boolean numberValidate(int number) {
+        return (number > 0 && number < 4000);
     }
 
-    public String numberToRomanNumeral(int number) {
-      return "MMDCCXLIX";
+    public String numberToRomanNumeral(int number) throws InvalidRomanNumeralException {
+        if (!numberValidate(number)) {
+            throw new InvalidRomanNumeralException("Invalid number for conversion.");
+        }
+        int key = fromNumberToRoman.floorKey(number);
+
+        if (number == key) {
+            return fromNumberToRoman.get(number);
+        }
+
+        return fromNumberToRoman.get(key) + numberToRomanNumeral(number - key);
     }
+
 }
